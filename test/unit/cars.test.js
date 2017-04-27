@@ -3,10 +3,10 @@ const Car = require('../../lib/models/car');
 
 describe('cars model', () => {
 
-  it('validates make and model are required', () => {
-    const car = new Car();
+  it('ensures invalid documents are not accepted', () => {
+    const invalidCar = new Car();
     
-    return car.validate()
+    return invalidCar.validate()
       .then(() => { throw new Error('Expected validation to fail'); },
       err => {
         const errors = err.errors;
@@ -16,4 +16,9 @@ describe('cars model', () => {
       });
   });
 
+  it('accepts valid documents', () => {
+    const validCar = new Car({ make: 'Ford', model: 'Mustang' });
+    
+    return validCar.validate();
+  });
 });
