@@ -15,4 +15,10 @@ describe('cat model', () => {
       });
   });
 
+  it('accepts valid documents', () => {
+    const validCat = new Cat({ name: 'Arthur' });
+
+    return validCat.validate();
+  });
+
 });
