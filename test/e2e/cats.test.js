@@ -30,4 +30,10 @@ describe('cats API', () => {
       .then(cats => assert.equal(cats.length, 1));
   });
 
+  it('GET by id should return that document', () => {
+    return request.get(`/api/cats/${frank._id}`)
+      .then(res => res.body)
+      .then(cat => assert.deepEqual(cat, frank));
+  });
+
 });
