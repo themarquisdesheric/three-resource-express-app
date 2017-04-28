@@ -56,6 +56,15 @@ describe('cars API', () => {
     });
   });
 
+  it('updates a car', () => {
+    mustang.make = 'Not Ford';
+
+    return request.put(`/api/cars/${mustang._id}`)
+      .send(mustang)
+      .then(res => res.body)
+      .then(car => assert.equal(car.make, 'Not Ford'));
+  });
+
   it('DELETEs a car', () => {
     return request.delete(`/api/cars/${mustang._id}`)
       .then(res => res.body)
@@ -69,6 +78,16 @@ describe('cars API', () => {
     return request.delete(`/api/cars/${mustang._id}`)
       .then(res => res.body)
       .then(result => assert.isFalse(result.removed));
+  });
+
+  it('GET a non-existent car returns 404', () => {
+    const invalidId = '589d04a8b6695bbdfd3106f1';
+
+    return request.get(`/api/cars/${invalidId}`)
+      .then(
+        () => { throw new Error('was expecting a 404 error'); },
+        res => assert.equal(res.status, 404)
+      );
   });
 
 });
