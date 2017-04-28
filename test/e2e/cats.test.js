@@ -10,4 +10,14 @@ describe('cats API', () => {
       .then(res => res.body)
       .then(result => assert.deepEqual(result, []));
   });
+
+  let testCat = { name: 'Frank', legs: 4, siblings: 'Arthur' };
+
+  it('POST should add document to database', () => {
+    return request.post('/api/cats')
+      .send(testCat)
+      .then(res => res.body)
+      .then(res => assert.ok(res._id));
+  });
+
 });
