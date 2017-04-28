@@ -36,4 +36,12 @@ describe('cats API', () => {
       .then(cat => assert.deepEqual(cat, frank));
   });
 
+  it('GET by id should return 404 if it does not exist', () => {
+    const nonexistentId = '589d04a8b6695bbdfd3106f1';
+
+    return request.get(`/api/cats/${nonexistentId}`)
+      .then(() => { throw new Error('Was expecting a 404 error'); },
+      res => assert.equal(res.status, 404));
+  });
+
 });
