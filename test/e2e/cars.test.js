@@ -12,22 +12,24 @@ describe('cars API', () => {
       .then(cars => assert.deepEqual(cars, []));
   });
 
-  let mustang = { make: 'Ford', model: 'Mustang' };
-
   it('roundtrips a new car', () => {
-    return request
+
+    let mustang = { make: 'Ford', model: 'Mustang' };
+    
+    function saveCar(car) {
+      return request
       .post('/api/cars')
-      .send(mustang)
-      .then(res => res.body)
+      .send(car)
+      .then(res => res.body);
+    }
+
+    saveCar(mustang)
       .then(saved => {
         assert.ok(saved._id, 'saved car has an id');
 
         mustang = saved;
       })
-
-      .then(() => {
-        return request.get(`/api/cars/${mustang._id}`);
-      })
+      .then(() => request.get(`/api/cars/${mustang._id}`))
       .then(res => res.body)
       .then(got => {
         assert.deepEqual(got, mustang);
