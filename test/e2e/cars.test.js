@@ -12,17 +12,18 @@ describe('cars API', () => {
       .then(cars => assert.deepEqual(cars, []));
   });
 
+  let mustang = { make: 'Ford', model: 'Mustang' };
+  let mr2 = { make: 'Toyota', model: 'MR2' };
+  let miata = { make: 'Mazda', model: 'Miata' };
+  
+  function saveCar(car) {
+    return request
+    .post('/api/cars')
+    .send(car)
+    .then(res => res.body);
+  }
+
   it('roundtrips a new car', () => {
-
-    let mustang = { make: 'Ford', model: 'Mustang' };
-    
-    function saveCar(car) {
-      return request
-      .post('/api/cars')
-      .send(car)
-      .then(res => res.body);
-    }
-
     saveCar(mustang)
       .then(saved => {
         assert.ok(saved._id, 'saved car has an id');
@@ -34,6 +35,25 @@ describe('cars API', () => {
       .then(got => {
         assert.deepEqual(got, mustang);
       });
+  });
+
+  it('GET returns a list of all cars', () => {
+    return Promise.all([
+      saveCar(mr2),
+      saveCar(miata)
+    ])
+    .then(savedCars => {
+      mr2 = savedCars[0];
+      miata = savedCars[1];
+    })
+    .then(() => request.get('/api/cars'))
+    .then(res => res.body)
+    .then(cars => {
+      assert.equal(cars.length, 3);
+      assert.include(cars, mustang);
+      assert.include(cars, mr2);
+      assert.include(cars, miata);
+    });
   });
 
 });
