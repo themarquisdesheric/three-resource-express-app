@@ -44,4 +44,15 @@ describe('cats API', () => {
       res => assert.equal(res.status, 404));
   });
 
+  it('updates a document', () => {
+    frank.name = 'Roger';
+
+    return request.put(`/api/cats/${frank._id}`)
+      .send(frank)
+      .then(res => res.body)
+      .then(updated => {
+        assert.equal(updated.name, 'Roger');
+      });
+  });
+
 });
