@@ -11,13 +11,17 @@ describe('cats API', () => {
       .then(result => assert.deepEqual(result, []));
   });
 
-  let testCat = { name: 'Frank', legs: 4, siblings: 'Arthur' };
+  let frank = { name: 'Frank', legs: 4, siblings: 'Arthur' };
 
   it('POST should add document to database', () => {
     return request.post('/api/cats')
-      .send(testCat)
+      .send(frank)
       .then(res => res.body)
-      .then(res => assert.ok(res._id));
+      .then(saved => {
+        assert.ok(saved._id);
+
+        frank = saved;
+      });
   });
 
 });
