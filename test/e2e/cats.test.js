@@ -24,4 +24,10 @@ describe('cats API', () => {
       });
   });
 
+  it('GET should return a cat', () => {
+    return request.get('/api/cats')
+      .then(res => res.body)
+      .then(cats => assert.equal(cats.length, 1));
+  });
+
 });
