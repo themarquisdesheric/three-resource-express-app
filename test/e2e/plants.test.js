@@ -84,11 +84,12 @@ describe('plants API', () => {
   });
 
   it('updates a plant', () => {
-    cactus.type = 'rose';
+    cactus.variety = 'rose';
 
     return request.put(`/api/plants/${cactus._id}`)
       .send(cactus)
-      .then(res => assert.equal(res.type, 'rose'));
+      .then(res => res.body)
+      .then(res => assert.equal(res.variety, 'rose'));
   });
 
 });
