@@ -53,7 +53,11 @@ describe('plants API', () => {
     });
   });
 
-  
+  it('GET plant by id', () => {
+    return request.get(`/api/plants/${maranta._id}`)
+      .then(res => res.body)
+      .then(plant => assert.deepEqual(plant, maranta)); 
+  });
 
 });
 
