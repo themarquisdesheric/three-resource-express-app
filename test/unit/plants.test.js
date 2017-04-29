@@ -17,4 +17,10 @@ describe('plants model', () => {
       );
   });
 
+  it('accepts valid documents', () => {
+    const maranta = new Plant({ type: 'Maranta', variety: 'prayer plant', leafy: true });
+
+    return maranta.validate();
+  });
+
 });
