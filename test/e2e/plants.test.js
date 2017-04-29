@@ -13,18 +13,47 @@ describe('plants API', () => {
   });
 
   let maranta = { type: 'Maranta', variety: 'prayer plant', leafy: true };
+  let cactus = { type: 'Spiny Cactus', variety: 'cactus', leafy: false };
+  let succulent = { type: 'Black Beauty', variety: 'desert', leafy: true };
+
+  function savePlant(plant) {
+    return request.post('/api/plants')
+      .send(plant)
+      .then(res => res.body);
+  }
 
   it('POST should add a plant to database', () => {
-
-    return request.post('/api/plants')
-      .send(maranta)
-      .then(res => res.body)
+    savePlant(maranta)
       .then(saved => {
         assert.ok(saved._id);
-        
+
         maranta = saved;
-      });
+      })
+      .then(() => request.get('/api/plants'))
+      .then(res => res.body)
+      .then(plant => assert.deepEqual(plant[0], maranta));
   });
+
+  it('GET returns a list of plants', () => {
+    return Promise.all([
+      savePlant(cactus),
+      savePlant(succulent)
+    ])
+    .then(saved => {
+      cactus = saved[0];
+      succulent = saved[1];
+    })
+    .then(() => request.get('/api/plants'))
+    .then(res => res.body)
+    .then(plants => {
+      assert.equal(plants.length, 3);
+      assert.include(plants, maranta);
+      assert.include(plants, cactus);
+      assert.include(plants, succulent);
+    });
+  });
+
+  
 
 });
 
