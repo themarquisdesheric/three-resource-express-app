@@ -83,6 +83,14 @@ describe('plants API', () => {
       .then(result => assert.isFalse(result.removed));
   });
 
+  it('updates a plant', () => {
+    cactus.type = 'rose';
+
+    return request.put(`/api/plants/${cactus._id}`)
+      .send(cactus)
+      .then(res => assert.equal(res.type, 'rose'));
+  });
+
 });
 
 
