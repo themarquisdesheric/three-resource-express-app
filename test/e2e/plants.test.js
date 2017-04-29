@@ -64,7 +64,7 @@ describe('plants API', () => {
 
     return request.get(`/api/plants/${nonexistentId}`)
       .then(() => { throw new Error('Expected 404 error'); },
-      err => assert.equal(err.code, 404));
+      err => assert.equal(err.status, 404));
   });
 
 });
