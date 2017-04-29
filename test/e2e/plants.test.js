@@ -76,6 +76,13 @@ describe('plants API', () => {
       .then(plants => assert.equal(plants.length, 2));
   });
 
+  it('DELETE nonexistent plant returns false', () => {
+
+    return request.delete(`/api/plants/${maranta._id}`)
+      .then(res => res.body)
+      .then(result => assert.isFalse(result.removed));
+  });
+
 });
 
 
