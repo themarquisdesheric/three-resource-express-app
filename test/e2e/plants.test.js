@@ -12,6 +12,17 @@ describe('plants API', () => {
       .then(plants => assert.deepEqual(plants, []));
   });
 
+  it('POST should add a plant to database', () => {
+    const maranta = { type: 'Maranta', variety: 'prayer plant', leafy: true };
+
+    return request.post('/api/plants')
+      .send(maranta)
+      .then(res => res.body)
+      .then(saved => {
+        assert.ok(saved._id);
+      });
+  });
+
 });
 
 
