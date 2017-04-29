@@ -55,4 +55,10 @@ describe('cats API', () => {
       });
   });
 
+  it('DELETEs a cat', () => {
+    return request.delete(`/api/cats/${frank._id}`)
+      .then(res => res.body)
+      .then(result => assert.isTrue(result.removed));
+  });
+
 });
