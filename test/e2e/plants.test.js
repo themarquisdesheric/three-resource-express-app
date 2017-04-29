@@ -67,6 +67,15 @@ describe('plants API', () => {
       err => assert.equal(err.status, 404));
   });
 
+  it('DELETE removes plant', () => {
+    return request.delete(`/api/plants/${maranta._id}`)
+      .then(res => res.body)
+      .then(result => assert.isTrue(result.removed))
+      .then(() => request.get('/api/plants/'))
+      .then(res => res.body)
+      .then(plants => assert.equal(plants.length, 2));
+  });
+
 });
 
 
