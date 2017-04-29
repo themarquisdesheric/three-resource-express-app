@@ -59,6 +59,14 @@ describe('plants API', () => {
       .then(plant => assert.deepEqual(plant, maranta)); 
   });
 
+  it('GET plant by id returns 404 if does not exist', () => {
+    const nonexistentId = '589d04a8b6695bbdfd3106f1';
+
+    return request.get(`/api/plants/${nonexistentId}`)
+      .then(() => { throw new Error('Expected 404 error'); },
+      err => assert.equal(err.code, 404));
+  });
+
 });
 
 
